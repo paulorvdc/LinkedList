@@ -12,7 +12,11 @@ linked_list *new_linked_list(int size) {
 }
 
 int is_empty(linked_list *l) {
-	return l->first == NULL;
+	return l->first == NULL ? 1 : 0; 
+}
+
+int count(linked_list *l) {
+	return l->count;
 }
 
 int is_full(linked_list *l) {
@@ -71,7 +75,6 @@ int remove_first(linked_list *l) {
 	node *aux = l->first;
 	int x = aux->value;
 	l->first = aux->next;
-	free(aux);
 	l->count--;
 	return x;
 }
@@ -92,16 +95,21 @@ void insert_last(int x, linked_list *l) {
 }
 
 int remove_last(linked_list *l) {
-	if (l == NULL || is_empty(l))
-		return -1;
 	node *aux = l->first;
+
+	if (aux->next == NULL) {
+		node *del = aux;
+		int x = del->value;
+		aux->next = NULL;
+		l->count--;
+		return x;
+	}
 	while (aux->next->next != NULL) {
-			aux = aux->next;
+		aux = aux->next;
 	}
 	node *del = aux->next;
 	int x = del->value;
 	aux->next = NULL;
-	free(del);
 	l->count--;
 	return x;
 }
